@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <!-- Header-->
+    <header class="bg-danger py-4">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Paiement</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Vérifiez votre commande...</p>
+            </div>
+        </div>
+    </header>
+
+    <br/>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        Récapitulatif de la commande
+                    </div>
+                    <div class="card-body">
+                        {% for product in cart_products %}
+                            {{ product.name }}:
+                            DT{{ product.price }}
+
+                            <br/>
+                            <small>Quantité:
+                                {% for key, value in quantities.items %}
+                                    {% if key == product.id|slugify %}
+                                        {{ value }}
+                                    {% endif %}
+                                {% endfor %}
+                            </small>
+                            <br/><br/>
+
+                        {% endfor %}
+                        Totale:  DT{{ totals }}
+                        <br/><br/>
+                        <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Mettre à jour les produits</a>
+                    </div>
+                </div>
+                <br/><br/>
+                <div class="card">
+                    <div class="card-header">
+                        Informations d'expédition
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ shipping_form.as_p }}
+                            <button type="submit" class="btn btn-secondary">Valider la commande</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

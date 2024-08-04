@@ -1,0 +1,168 @@
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/fav.png' %}" />
+    <title>Revue des Demandes de Compte</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Navbar styling */
+        .navbar {
+            background-color: #fff;
+            color: rgb(199, 8, 8);
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        .navbar h1 {
+            color: rgb(199, 8, 8);
+            margin: 0 auto;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        /* Body styling */
+        body {
+            background-color: #f8f9fa;
+            color: black;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            padding: 20px;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Button styling */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        /* Document list styling */
+        ul {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        ul li {
+            padding: 5px 0;
+        }
+
+        ul li a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        ul li a:hover {
+            color: #0056b3;
+        }
+
+        /* Footer button styling */
+        .footer-btn {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="#">
+            <img src="{% static 'assets/logo.png' %}" alt="Logo">
+        </a>
+        <h1>Revue des Demandes de Compte</h1>
+    </nav>
+
+    <table class="mt-4">
+        <thead>
+            <tr>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Nom d'utilisateur</th>
+                <th>Email</th>
+                <th>Documents</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in requests %}
+            <tr>
+                <td>{{ request.first_name }}</td>
+                <td>{{ request.last_name }}</td>
+                <td>{{ request.username }}</td>
+                <td>{{ request.email }}</td>
+                <td>
+                    <ul>
+                        {% for document in request.accountdocument_set.all %}
+                        <li><a href="{{ document.document.url }}">{{ document.document.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <a href="{% url 'approve_request' request.id %}" class="btn btn-secondary">Approuver</a>
+                    <a href="{% url 'reject_request' request.id %}" class="btn btn-danger">Rejeter</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="footer-btn">
+        <a class="btn btn-danger" href="{% url 'sdvente' %}">Retour</a>
+    </div>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    <title>Confirmer la suppression</title>
+    <style>
+        /* Navbar styling */
+        .navbar {
+            background-color: #f8f9fa; /* Light gray */
+            color: rgb(199, 8, 8);
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adding shadow */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .navbar img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        .navbar h1 {
+            color: rgb(199, 8, 8);
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        /* Body styling */
+        body {
+            background-color: white;
+            color: black;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            padding: 20px;
+        }
+
+        /* Confirmation box styling */
+        .confirmation-box {
+            margin: 40px auto;
+            max-width: 400px;
+            background-color: #fff3f4; /* Light red */
+            border: 1px solid #f5c6cb; /* Dark red */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adding shadow */
+            text-align: center;
+        }
+
+        .confirmation-box p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        /* Submit button styling */
+        button[type="submit"] {
+            background-color: rgb(199, 8, 8);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adding shadow */
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #b80606; /* Darker red on hover */
+        }
+
+        /* Cancel link styling */
+        .cancel-link {
+            color: rgb(199, 8, 8);
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+
+        .cancel-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Center alignment for headings */
+        h1 {
+            text-align: center;
+            margin: 0 auto 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 30px auto 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <img src="{% static 'assets/logo.png' %}" alt="Logo">
+        <h1>Confirmer la suppression</h1>
+    </div>
+    <div class="confirmation-box">
+        <p>Etes-vous sûr de vouloir supprimer "{{ object.name }}"?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Confirmer</button>
+        </form>
+        <a class="cancel-link" href="{% url 'product-list' %}">Annuler</a>
+    </div>
+</body>
+</html>

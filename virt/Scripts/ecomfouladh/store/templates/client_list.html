@@ -1,0 +1,188 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/fav.png' %}" />
+    <title>Liste des Clients</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: black;
+            padding: 20px;
+        }
+
+        .navbar {
+            background-color: white;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+
+        .title-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .btn-toggle {
+            margin-right: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div>
+        <img src="{% static 'assets/logo.png' %}" alt="Logo">
+    </div>
+    <div class="title-container">
+        <h1 id="pageTitle">Liste des Clients Approuvés</h1>
+    </div>
+    <div>
+        <button id="toggleBtn" class="btn btn-primary btn-toggle">Afficher les comptes refusés</button>
+    </div>
+  </nav>
+
+  <table id="accountsTable">
+    <thead>
+      <tr id="tableHeader">
+        <th>Nom d'utilisateur</th>
+        <th>Email</th>
+        <th>Prénom</th>
+        <th>Nom de famille</th>
+        <th>Date de création</th>
+      </tr>
+    </thead>
+    <tbody id="approvedAccounts">
+      {% for account in approved_accounts %}
+      <tr>
+        <td>{{ account.username }}</td>
+        <td>{{ account.email }}</td>
+        <td>{{ account.first_name }}</td>
+        <td>{{ account.last_name }}</td>
+        <td>{{ account.created_at|date:"d F Y" }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5">Aucun compte approuvé trouvé.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tbody id="failedAccounts" style="display: none;">
+      {% for account in failed_accounts %}
+      <tr>
+        <td>{{ account.username }}</td>
+        <td>{{ account.email }}</td>
+        <td>{{ account.first_name }}</td>
+        <td>{{ account.last_name }}</td>
+        <td>{{ account.created_at|date:"d F Y" }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5">Aucun compte refusé trouvé.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <br/>
+  <div class="text-center">
+    <a class="btn btn-danger" href="{% url 'sdvente' %}">Retour</a>
+  </div>
+
+  <script>
+    document.getElementById('toggleBtn').addEventListener('click', function() {
+        var approvedAccounts = document.getElementById('approvedAccounts');
+        var failedAccounts = document.getElementById('failedAccounts');
+        var toggleBtn = document.getElementById('toggleBtn');
+        var pageTitle = document.getElementById('pageTitle');
+        var tableHeader = document.getElementById('tableHeader');
+
+        if (approvedAccounts.style.display === 'none') {
+            approvedAccounts.style.display = '';
+            failedAccounts.style.display = 'none';
+            toggleBtn.textContent = 'Afficher les comptes refusés';
+            pageTitle.textContent = 'Liste des Clients Approuvés';
+            tableHeader.innerHTML = `
+                <th>Nom d'utilisateur</th>
+                <th>Email</th>
+                <th>Prénom</th>
+                <th>Nom de famille</th>
+                <th>Date de création</th>`;
+        } else {
+            approvedAccounts.style.display = 'none';
+            failedAccounts.style.display = '';
+            toggleBtn.textContent = 'Afficher les comptes approuvés';
+            pageTitle.textContent = 'Liste des Clients Refusés';
+            tableHeader.innerHTML = `
+                <th>Nom d'utilisateur</th>
+                <th>Email</th>
+                <th>Prénom</th>
+                <th>Nom de famille</th>
+                <th>Date de rejet</th>`;
+        }
+    });
+  </script>
+</body>
+</html>

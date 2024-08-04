@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<header class="bg-danger py-1">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Mes commandes</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Suivez vos commandes...</p>
+        </div>
+    </div>
+</header>
+<br/><br/><br/>
+<div class="container">
+    <div class="row">
+        {% if user_orders %}
+            {% for order in user_orders %}
+                <div class="col-lg-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-danger text-white">
+                            <h5 class="card-title mb-0">ID de commande : {{ order.id }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="mb-2">
+                                        <strong>Nom complet :</strong><br>
+                                        {{ order.full_name }}
+                                    </p>
+                                    <p class="mb-2">
+                                        <strong>Email :</strong><br>
+                                        {{ order.email }}
+                                    </p>
+                                    <p class="mb-2">
+                                        <strong>Adresse de livraison :</strong><br>
+                                        {{ order.shipping_address }}
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="mb-2">
+                                        <strong>Montant payé :</strong><br>
+                                        {{ order.amount_paid }}DT
+                                    </p>
+                                    <p class="mb-2">
+                                        <strong>Date de commande :</strong><br>
+                                        {{ order.date_ordered|date:"d F Y" }}
+                                    </p>
+                                    <p class="mb-2">
+                                        <strong>Statut :</strong><br>
+                                        <span class="badge 
+                                            {% if order.status == 'delivered' %}
+                                                bg-success text-white
+                                            {% elif order.status == 'in_progress' %}
+                                                bg-warning text-dark
+                                            {% else %}
+                                                bg-danger text-white
+                                            {% endif %}
+                                        ">
+                                            {{ order.get_status_display }}
+                                        </span>
+                                    </p>
+                                    <p class="mb-0">
+                                        <strong>Date d'expédition :</strong><br>
+                                        {% if order.date_shipped %}
+                                            {{ order.date_shipped|date:"d F Y" }}
+                                        {% else %}
+                                            Pas encore expédiée
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Comment Form -->
+                            <form action="{% url 'add_comment' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="order_id" value="{{ order.id }}">
+                                <div class="form-group mt-3">
+                                    <label for="comment">Commentaire:</label>
+                                    <textarea class="form-control" name="comment" rows="3" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Envoyer</button>
+                            </form>
+                            <!-- Comment Container -->
+                            <div id="commentContainer{{ order.id }}" class="mt-4">
+                                {% for comment in order.comments.all %}
+                                <div class="comment" id="comment-{{ comment.id }}">
+                                    <strong>{{ comment.user.username }}:</strong>
+                                    <span class="comment-text">{{ comment.comment }}</span>
+                                    <div><small>{{ comment.date_created|date:"d F Y, H:i" }}</small></div>
+                                    {% if request.user == comment.user %}
+                                        <div>
+                                            <!-- Edit Comment Form -->
+                                            <form action="{% url 'edit_comment' comment.id %}" method="POST" style="display:inline;">
+                                                {% csrf_token %}
+                                                <textarea name="comment" class="form-control mb-2" style="display:inline;width:auto;min-width:200px;">{{ comment.comment }}</textarea>
+                                                <button type="submit" class="btn btn-primary btn-sm">Modifier</button>
+                                            </form>
+                                            <!-- Delete Comment Form -->
+                                            <form action="{% url 'delete_comment' comment.id %}" method="POST" style="display:inline;">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                            </form>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col">
+                <div class="alert alert-warning" role="alert">
+                    Aucune commande trouvée.
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

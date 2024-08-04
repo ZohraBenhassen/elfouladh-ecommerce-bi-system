@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Header-->
+<header class="bg-danger py-2">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-5 fw-bolder">Réclamation</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Ajouter une réclamation</p>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <form action="{% url 'send_reclamation' %}" method="POST" class="needs-validation" style="max-width: 500px; margin-bottom: 200px; margin-top: 100px; margin-left: 300px; margin-right: 100px;" onsubmit="return validateForm()"> 
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="nom" class="form-label">Nom et prénom :</label>
+            <input type="text" id="nom" name="nom" class="form-control" pattern="^[a-zA-Z\s]+$" required>
+            <div class="invalid-feedback">Veuillez entrer votre nom et prénom (lettres et espaces uniquement).</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Adresse email :</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+            <div class="invalid-feedback">Veuillez entrer une adresse email valide.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="telephone" class="form-label">Numéro de téléphone :</label>
+            <input type="text" id="telephone" name="telephone" class="form-control" pattern="^\d+$" required>
+            <div class="invalid-feedback">Veuillez entrer votre numéro de téléphone (chiffres uniquement).</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="reclamation" class="form-label">Votre réclamation :</label>
+            <textarea id="reclamation" name="reclamation" rows="4" class="form-control" required></textarea>
+            <div class="invalid-feedback">Veuillez entrer votre réclamation.</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    </form>
+</div>
+
+<script>
+    function validateForm() {
+        let nom = document.getElementById('nom').value;
+        let telephone = document.getElementById('telephone').value;
+        let nomPattern = /^[a-zA-Z\s]+$/;
+        let telephonePattern = /^\d{8}$/;
+
+        if (!nomPattern.test(nom)) {
+            alert("Veuillez entrer un nom et prénom valides (lettres et espaces uniquement).");
+            return false;
+        }
+
+        if (!telephonePattern.test(telephone)) {
+            alert("Veuillez entrer un numéro de téléphone valide (chiffres uniquement).");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+{% endblock content %}

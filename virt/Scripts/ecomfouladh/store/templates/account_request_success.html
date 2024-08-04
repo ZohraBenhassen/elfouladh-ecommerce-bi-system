@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demande Soumise</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Global styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: black;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container styling */
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+        }
+
+        /* Heading styling */
+        h1 {
+            color: rgb(199, 8, 8);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        /* Paragraph styling */
+        p {
+            color: #555;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background-color: rgb(199, 8, 8);
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #b80606;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Demande soumise</h1>
+        <p>Votre demande de compte a été soumise avec succès. Vous recevrez un e-mail une fois qu'il aura été examiné.</p>
+        <a href="{% url 'home' %}" class="btn btn-primary">Retour à la page d'accueil</a>
+    </div>
+</body>
+</html>

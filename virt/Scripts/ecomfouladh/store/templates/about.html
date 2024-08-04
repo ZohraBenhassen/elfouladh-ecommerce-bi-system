@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+  .about-section {
+    background-color: rgba(169, 169, 169, 0.1); /* Light gray background */
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px; /* Add some space between sections */
+  }
+  .about-section p {
+    text-align: justify; /* Justify text alignment */
+    margin-bottom: 20px; /* Add space between paragraphs */
+  }
+  .img2 {
+    width: 100%; /* Responsive image width */
+    height: auto;
+    margin-bottom: 20px; /* Add some space below the image */
+  }
+  .ht {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+</style>
+
+<!-- Header-->
+<header class="bg-danger py-1">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder text-white">À Propos...</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Bienvenue à Elfouladh...</p>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="about-section">
+                <p>
+                    <strong>La société tunisienne de sidérurgie "ELFOULADH"</strong> est un acteur majeur dans l'économie tunisienne. Depuis sa création, elle fournit des produits de base pour les secteurs de la construction, de l'agriculture et de l'industrie. Sa contribution porte aussi bien sur l'économie que sur la mise en valeur de l'élément humain qui constitue la base de son rayonnement.
+                </p>
+                <p>
+                    Les produits sidérurgiques fournis par la société Elfouladh tels que le rond à béton, le fer marchand, le fil tréfilé et les structures métalliques ont été toujours soignés et fabriqués sur la base des normes internationales en vigueur.
+                </p>
+                <p>
+                    Nos valeurs incluent la qualité, l'innovation, l'intégrité, la durabilité et la satisfaction du client. Notre vision est d'être le choix préféré pour les produits sidérurgiques en Tunisie et au-delà, en améliorant continuellement nos capacités et en contribuant à la croissance et à la prospérité de notre nation.
+                </p>
+                <p class="text-right mb-0">
+                    <a href="{% url 'contact' %}" class="btn btn-danger">Contactez Nous &#x2192;</a>
+                    <a href="{% url 'reclam' %}" class="btn btn-outline-danger ml-2">Réclamation &#x2192;</a>
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4 ">
+            <img src="{% static 'assets/ap.png' %}" class="img-fluid img2" alt="About Image">
+        </div>
+    </div>
+
+    <div class="about-section">
+        <p>
+            <strong>
+                <h1 class="ht">Depuis 1965</h1>
+                La société tunisienne de sidérurgie ELFOULADH est une société anonyme créée en 1962 avec un capital de 53 339 520 DT. Elle commence la production en 1965.
+            </strong>
+        </p>
+    </div>
+</div>
+
+{% endblock %}

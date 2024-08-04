@@ -1,0 +1,187 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/fav.png' %}" />
+    <title>Orders</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+      /* Global Styling */
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f8f9fa; /* Light gray */
+          color: black;
+          padding: 20px;
+      }
+
+      /* Navbar Styling */
+      .navbar {
+          background-color: white; /* White background */
+          color: rgb(199, 8, 8); /* Red text color */
+          padding: 10px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adding shadow */
+      }
+
+      .navbar img {
+          width: 60px;
+          height: 60px;
+          border-radius: 60%;
+      }
+
+      h1 {
+          margin-left: 20px;
+      }
+
+      /* Table Styling */
+      table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 20px;
+          background-color: white;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adding shadow */
+      }
+
+      th, td {
+          border: 1px solid #ddd;
+          padding: 10px;
+          text-align: left;
+      }
+
+      th {
+          background-color: #f2f2f2; /* Light gray */
+      }
+
+      /* Button Styling */
+      .btn {
+          padding: 8px 16px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          text-decoration: none;
+          transition: background-color 0.3s;
+      }
+
+      .btn-danger {
+          background-color: #dc3545; /* Red */
+          color: white;
+      }
+
+      .btn-danger:hover {
+          background-color: #c82333; /* Darker red on hover */
+      }
+
+      /* Order Status Buttons */
+      .status-btn {
+          padding: 8px 16px;
+          border: none;
+          border-radius: 5px;
+          color: white;
+          font-weight: bold;
+      }
+
+      .btn-delivered {
+          background-color: #4CAF50; /* Green */
+      }
+
+      .btn-not-delivered {
+          background-color: #f44336; /* Red */
+      }
+
+      .btn-in-progress {
+          background-color: #ffc107; /* Yellow */
+      }
+
+      /* Comment Styling */
+      .comment-section {
+          margin-top: 20px;
+      }
+
+      .comment {
+          margin-bottom: 10px;
+      }
+
+      .comment-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 10px;
+          background-color: #f9f9f9;
+      }
+
+      .comment-table th, .comment-table td {
+          border: 1px solid #ddd;
+          padding: 8px;
+          text-align: left;
+      }
+
+      .comment-table th {
+          background-color: #e9ecef;
+      }
+    </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div>
+        <img src="{% static 'assets/logo.png' %}" alt="Logo">
+    </div>
+    <h1>Orders</h1>
+  </nav>
+    
+  <table>
+    <thead>
+      <tr>
+          <th>ID</th>
+          <th>Utilisateur</th>
+          <th>Nom Complet</th>
+          <th>Email</th>
+          <th>Adresse de Livraison</th>
+          <th>Montant Payé</th>
+          <th>Date de Commande</th>
+          <th>Statut</th>
+          <th>Date d'Expédition</th>
+          <th>Commentaires</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr>
+          <td>{{ order.id }}</td>
+          <td>{{ order.user.username }}</td>
+          <td>{{ order.full_name }}</td>
+          <td>{{ order.email }}</td>
+          <td>{{ order.shipping_address }}</td>
+          <td>{{ order.amount_paid }}</td>
+          <td>{{ order.date_ordered }}</td>
+          <td>
+              {% if order.status == 'pending' %}
+                 <span class="status-btn btn-not-delivered">Non livré</span> 
+              {% elif order.status == 'in_progress' %}
+                  <span class="status-btn btn-in-progress">En cours de livraison</span> 
+              {% else %}
+                   <span class="status-btn btn-delivered">Livré</span>
+              {% endif %}
+          </td>   
+          <td>{{ order.date_shipped }}</td>
+          <td>
+              <table class="comment-table">
+                  {% for comment in order.comments.all %}
+                  <tr>
+                      <td>{{ comment.comment }}</td>
+                      <td><small>{{ comment.date_created|date:"d F Y, H:i" }}</small></td>
+                  </tr>
+                  {% endfor %}
+              </table>
+          </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <br/>
+  <div class="text-center">
+      <a class="btn btn-danger" href="{% url 'sdvente' %}">Retour</a>
+  </div>
+</body>
+</html>
